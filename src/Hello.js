@@ -4,11 +4,11 @@ import { useMeasure } from "./useMeasure";
 
 export const Hello = () => {
   const [count, setCount] = useState(() =>
-    JSON.parse(localStorage.getItem("count"))
+    JSON.parse(localStorage.getItem("count") ?? 0)
   );
   const { data } = useFetch(`http://numbersapi.com/${count}/trivia`);
   useEffect(() => {
-    localStorage.setItem("count", JSON.stringify(count));
+    localStorage.setItem("count", JSON.stringify(count ?? 0));
   }, [count]);
 
   const [rect, divRef] = useMeasure([data]);
