@@ -1,17 +1,40 @@
-import { useForm } from "./useForm";
+import React, { useState, useMemo } from "react";
+import { useFetch } from "./useFetch";
+
+function computeLongestWord(data) {
+  if (!data) {
+    return [];
+  }
+
+  console.log("computing longest word");
+
+  let longestWord = "";
+
+  data.forEach((sentence) =>
+    sentence.split(" ").forEach((word) => {
+      if (word.length > longestWord.length) {
+        longestWord = word;
+      }
+    })
+  );
+
+  return longestWord;
+}
 
 const App = () => {
-  const [values, handleChange] = useForm({ email: "", password: "" });
+  const [count, setCount] = useState(0);
+  const { data } = useFetch(
+    "https://raw.githubusercontent.com/ajzbc/kanye.rest/master/quotes.json"
+  );
+
+  const longestWord = useMemo(() => computeLongestWord(data), [data]);
+
   return (
-    <>
-      <input name="email" value={values.email} onChange={handleChange} />
-      <input
-        type="password"
-        name="password"
-        value={values.password}
-        onChange={handleChange}
-      />
-    </>
+    <div>
+      <div>count: {count}</div>
+      <button onClick={() => setCount(count + 1)}>increment</button>
+      <div>{longestWord}</div>
+    </div>
   );
 };
 
