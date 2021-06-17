@@ -1,17 +1,26 @@
-import { useForm } from "./useForm";
+import { useState, useCallback } from "react";
+import { Hello } from "./Hello";
+import { Square } from "./Square";
 
 const App = () => {
-  const [values, handleChange] = useForm({ email: "", password: "" });
+  const [count, setCount] = useState(0);
+  const favoriteNums = [7, 21, 37];
+
+  const increment = useCallback(
+    (n) => {
+      setCount((c) => c + n);
+    },
+    [setCount]
+  );
+
   return (
-    <>
-      <input name="email" value={values.email} onChange={handleChange} />
-      <input
-        type="password"
-        name="password"
-        value={values.password}
-        onChange={handleChange}
-      />
-    </>
+    <div>
+      <Hello increment={increment} />
+      <div>count: {count}</div>
+      {favoriteNums.map((n) => {
+        return <Square key={n} increment={increment} n={n} />;
+      })}
+    </div>
   );
 };
 
